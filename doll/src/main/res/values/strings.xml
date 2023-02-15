@@ -1,0 +1,21 @@
+<resources>
+    <string name="app_name">玩偶工場</string>
+    <string name="login_by_password">login_by_password</string>
+    <string name="login_by_verifycode">login_by_verifycode</string>
+    <string name="phone_number">帳號</string>
+    <string name="input_phone_number">input_phone_number</string>
+    <string name="login_password">密碼</string>
+    <string name="input_password">input_password</string>
+    <string name="forget_password">忘記密碼</string>
+    <string name="remember_password">記住我</string>
+    <string name="login">登入</string>
+    <string name="input_new_password">輸入新密碼</string>
+    <string name="input_new_password_hint">input_new_password_hint</string>
+    <string name="confirm_new_password">confirm_new_password</string>
+    <string name="input_new_password_again">密碼確認</string>
+    <string name="verifycode">verifycode</string>
+    <string name="input_verifycode">input_verifycode</string>
+    <string name="get_verifycode">取得驗證碼</string>
+    <string name="done">done</string>
+    <string name="done2">done</string>
+</resources>

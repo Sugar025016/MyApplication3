@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shortcuts xmlns:android="http://schemas.android.com/apk/res/android">
+    <shortcut
+        android:shortcutId="first"
+        android:enabled="true"
+        android:icon="@mipmap/ic_launcher"
+        android:shortcutLongLabel="@string/page1_long"
+        android:shortcutShortLabel="@string/page1_short">
+        <intent
+            android:action="android.intent.action.VIEW"
+            android:targetPackage="com.example.myapplication"
+            android:targetClass="com.example.myapplication.MainActivity"/>
+        <categories android:name="android.shortcut.conversation"/>
+    </shortcut>
+    <shortcut
+        android:shortcutId="second"
+        android:enabled="true"
+        android:icon="@mipmap/ic_launcher"
+        android:shortcutLongLabel="@string/page2_long"
+        android:shortcutShortLabel="@string/page2_short">
+        <intent
+            android:action="android.intent.action.VIEW"
+            android:targetPackage="com.example.myapplication"
+            android:targetClass="com.example.myapplication.MainActivity5_packageManager"/>
+        <categories android:name="android.shortcut.conversation"/>
+    </shortcut>
+    <shortcut
+        android:shortcutId="third"
+        android:enabled="true"
+        android:icon="@mipmap/ic_launcher"
+        android:shortcutLongLabel="@string/page3_long"
+        android:shortcutShortLabel="@string/page3_short">
+        <intent
+            android:action="android.intent.action.VIEW"
+            android:targetPackage="com.example.myapplication"
+            android:targetClass="com.example.myapplication.MainActivity3"/>
+        <categories android:name="android.shortcut.conversation"/>
+    </shortcut>
+</shortcuts>

@@ -1,0 +1,21 @@
+<resources>
+    <string name="app_name">chapter05</string>
+    <string name="login_by_password">login_by_password</string>
+    <string name="login_by_verifycode">login_by_verifycode</string>
+    <string name="phone_number">phone_number</string>
+    <string name="input_phone_number">input_phone_number</string>
+    <string name="login_password">login_password</string>
+    <string name="input_password">input_password</string>
+    <string name="forget_password">forget_password</string>
+    <string name="remember_password">remember_password</string>
+    <string name="login">login</string>
+    <string name="input_new_password">input_new_password</string>
+    <string name="input_new_password_hint">input_new_password_hint</string>
+    <string name="confirm_new_password">confirm_new_password</string>
+    <string name="input_new_password_again">input_new_password_again</string>
+    <string name="verifycode">verifycode</string>
+    <string name="input_verifycode">input_verifycode</string>
+    <string name="get_verifycode">get_verifycode</string>
+    <string name="done">done</string>
+    <string name="done2">done</string>
+</resources>

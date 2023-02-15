@@ -1,0 +1,30 @@
+pluginManagement {
+    repositories {
+        gradlePluginPortal()
+        google()
+        mavenCentral()
+    }
+}
+dependencyResolutionManagement {
+    repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
+    repositories {
+        google()
+        mavenCentral()
+
+        maven { url 'https://jitpack.io' }
+    }
+}
+
+rootProject.name = "My Application"
+include ':app'
+include ':mylibrary'
+include ':myapplication'
+include ':myapplication2'
+include ':myapplication3'
+include ':myapplication4'
+include ':myapplication5'
+include ':myapplication6'
+include ':chapter07-server'
+include ':chapter07-client'
+include ':chapter05'
+include ':doll'

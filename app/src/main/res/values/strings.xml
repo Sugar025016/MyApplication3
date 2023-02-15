@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">My Application</string>
+    <string name="test2">222222222222222</string>
+    <string name="page1_long">AAAAA_L</string>
+    <string name="page1_short">AAAAA_S</string>
+    <string name="page2_long">BBBBB_L</string>
+    <string name="page2_short">BBBBB_S</string>
+    <string name="page3_long">CCCCC_L</string>
+    <string name="page3_short">CCCCC_S</string>
+</resources>

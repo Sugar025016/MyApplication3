@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:orientation="vertical">
+
+    <include layout="@layout/activity_title_shopping" />
+    <!--    <include layout="@layout/item_goods"/>-->
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <!--        <GridLayout-->
+        <!--            android:id="@+id/gl_cart_channel"-->
+        <!--            android:layout_width="match_parent"-->
+        <!--            android:layout_height="wrap_content"/>-->
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:id="@+id/ll_content"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:visibility="visible">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="85dp"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:textColor="@color/black"
+                        android:textSize="15sp"
+                        tools:text="圖片" />
+
+                    <TextView
+                        android:layout_width="85dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="3"
+                        android:gravity="center"
+                        android:textColor="@color/black"
+                        android:textSize="15sp"
+                        tools:text="名稱" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:textColor="@color/black"
+                        android:textSize="15sp"
+                        tools:text="數量" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:textColor="@color/black"
+                        android:textSize="15sp"
+                        tools:text="單價" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:textColor="@color/black"
+                        android:textSize="15sp"
+                        tools:text="總價" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/ll_cart"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:padding="0dp">
+
+                    <Button
+                        android:id="@+id/btn_clear"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:text="清空"
+                        android:textColor="@color/black"
+                        android:textSize="17sp" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center|right"
+                        android:textColor="@color/black"
+                        android:textSize="17sp"
+                        android:text="總金額:"/>
+                    <TextView
+                        android:id="@+id/tv_total_price"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="10dp"
+                        android:gravity="center|left"
+                        android:textColor="@color/red"
+                        android:textSize="25sp" />
+
+                    <Button
+                        android:id="@+id/btn_settle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:text="結算"
+                        android:textColor="@color/black"
+                        android:textSize="17sp" />
+                </LinearLayout>
+            </LinearLayout>
+
+<!--            <LinearLayout-->
+<!--                android:id="@+id/ll_empty"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:orientation="vertical"-->
+<!--                android:visibility="gone"-->
+<!--                tools:visibility="visible">-->
+
+<!--                <TextView-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:layout_marginTop="100dp"-->
+<!--                    android:layout_marginBottom="100dp"-->
+<!--                    android:gravity="center"-->
+<!--                    android:text="購物車空的"-->
+<!--                    android:textColor="@color/black"-->
+<!--                    android:textSize="17sp" />-->
+
+
+<!--                <Button-->
+<!--                    android:id="@+id/btn_shopping_channel"-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:gravity="center"-->
+<!--                    android:text="逛逛去"-->
+<!--                    android:textColor="@color/black"-->
+<!--                    android:textSize="17sp" />-->
+<!--            </LinearLayout>-->
+
+        </RelativeLayout>
+    </ScrollView>
+
+</LinearLayout>

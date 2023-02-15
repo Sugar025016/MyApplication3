@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="center_vertical">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="形狀圖形" />
+    <View
+        android:id="@+id/v_content"
+        android:layout_width="wrap_content"
+        android:layout_height="200dp"
+        android:layout_margin="10dp"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="2"
+        android:orientation="horizontal">
+        <Button
+            android:id="@+id/btn_rect"
+            android:layout_width="10dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:text= "AAA"/>
+        <Button
+            android:id="@+id/btn_oval"
+            android:layout_width="10dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:text="BBB"/>
+    </LinearLayout>
+</LinearLayout>
