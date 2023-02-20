@@ -11,13 +11,13 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MyApplication"
         android:usesCleartextTraffic="true">
-<!--        <activity-->
-<!--            android:name=".LineChartData"-->
-<!--            android:exported="false">-->
-<!--            <meta-data-->
-<!--                android:name="android.app.lib_name"-->
-<!--                android:value="" />-->
-<!--        </activity>-->
+        <activity
+            android:name=".LineChartData"
+            android:exported="false">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
         <activity
             android:name=".ShoppingCartActivity"
             android:exported="false">
@@ -67,7 +67,7 @@
         <!-- android:value="" /> -->
         <!-- </activity> -->
         <activity
-            android:name=".LineChartData"
+            android:name=".LoginActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

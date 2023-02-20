@@ -12,11 +12,21 @@ public class CartResponse {
 
     private Integer id;
 
+    private Integer productId;
+
     private String title;
 
     private int qty;
 
     private int total;
+
+    public Integer getProductId() {
+        return productId;
+    }
+
+    public void setProductId(Integer productId) {
+        this.productId = productId;
+    }
 
     private int totalOriginPrice;
 

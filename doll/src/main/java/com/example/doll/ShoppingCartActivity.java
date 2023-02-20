@@ -119,7 +119,7 @@ public class ShoppingCartActivity extends AppCompatActivity {
             qtySum=qtySum+cartResponse.getTotal();
 
             try {
-                getGoods( cartResponse.getId(), view);
+                getGoods( cartResponse.getProductId(), view);
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -170,6 +170,8 @@ public class ShoppingCartActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call call, Response response) throws IOException {
 
+
+
                 final String myResponse = response.body().string();
 
                 ShoppingCartActivity.this.runOnUiThread(new Runnable() {
@@ -179,24 +181,28 @@ public class ShoppingCartActivity extends AppCompatActivity {
                         Gson gson = new Gson();
                         ResponseData responseData = new ResponseData<Carts>();
                         responseData = gson.fromJson(myResponse,  responseData.getClass());
-                        System.out.println("///product///product/////"+responseData.getData());
-                        String s = responseData.getData().toString();
-                        Product product  = gson.fromJson(s, Product.class);
-                        ImageView iv_thumb = view.findViewById(R.id.iv_thumb);
-                        TextView tv_price = view.findViewById(R.id.tv_price);
-                        TextView tv_name = view.findViewById(R.id.tv_name);
+                        if(responseData.isSuccess()){
+                            System.out.println("///product///product/////"+responseData.getData());
 
-                        tv_name.setText(product.getTitle());
-                        tv_name.setText(product.getTitle());
+                            String s = responseData.getData().toString();
+                            System.out.println("///product///s/////"+s);
+                            Product product  = gson.fromJson(s, Product.class);
+                            ImageView iv_thumb = view.findViewById(R.id.iv_thumb);
+                            TextView tv_price = view.findViewById(R.id.tv_price);
+                            TextView tv_name = view.findViewById(R.id.tv_name);
 
-                        if (product.getImageUrl() != null) {
-                            String url = "http://192.168.43.87:8082/img/" + product.getImageUrl();
+                            tv_name.setText(product.getTitle());
 
-                            Glide.with(iv_thumb.getContext())
-                                    .load(url)
-                                    .into(iv_thumb);
+                            if (product.getImageUrl() != null) {
+                                String url = "http://192.168.43.87:8082/img/" + product.getImageUrl();
+
+                                Glide.with(iv_thumb.getContext())
+                                        .load(url)
+                                        .into(iv_thumb);
+                            }
+                            tv_price.setText("$" + product.getPrice().toString());
                         }
-                        tv_price.setText("$" + product.getPrice().toString());
+
 
                     }
                 });
