@@ -44,6 +44,17 @@ public class ShoppingActivity extends AppCompatActivity {
     private String header;
     private ImageView iv_cart;
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        // 调用 API 获取最新数据
+        try {
+            run();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,17 +80,13 @@ public class ShoppingActivity extends AppCompatActivity {
 
         tv_count = findViewById(R.id.tv_count);
 
-
-        try {
-            run();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
         try {
             runCort();
         } catch (IOException e) {
             e.printStackTrace();
         }
+
+
     }
 
 
