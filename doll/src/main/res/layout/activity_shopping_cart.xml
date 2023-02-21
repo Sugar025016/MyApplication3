@@ -86,6 +86,7 @@
                     android:orientation="vertical" />
 
                 <LinearLayout
+                    android:id="@+id/ll_settle"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
@@ -128,34 +129,34 @@
                 </LinearLayout>
             </LinearLayout>
 
-<!--            <LinearLayout-->
-<!--                android:id="@+id/ll_empty"-->
-<!--                android:layout_width="match_parent"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:orientation="vertical"-->
-<!--                android:visibility="gone"-->
-<!--                tools:visibility="visible">-->
+            <LinearLayout
+                android:id="@+id/ll_empty"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:visibility="gone"
+                tools:visibility="visible">
 
-<!--                <TextView-->
-<!--                    android:layout_width="match_parent"-->
-<!--                    android:layout_height="wrap_content"-->
-<!--                    android:layout_marginTop="100dp"-->
-<!--                    android:layout_marginBottom="100dp"-->
-<!--                    android:gravity="center"-->
-<!--                    android:text="購物車空的"-->
-<!--                    android:textColor="@color/black"-->
-<!--                    android:textSize="17sp" />-->
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="100dp"
+                    android:layout_marginBottom="100dp"
+                    android:gravity="center"
+                    android:text="購物車空的"
+                    android:textColor="@color/black"
+                    android:textSize="17sp" />
 
 
-<!--                <Button-->
-<!--                    android:id="@+id/btn_shopping_channel"-->
-<!--                    android:layout_width="match_parent"-->
-<!--                    android:layout_height="wrap_content"-->
-<!--                    android:gravity="center"-->
-<!--                    android:text="逛逛去"-->
-<!--                    android:textColor="@color/black"-->
-<!--                    android:textSize="17sp" />-->
-<!--            </LinearLayout>-->
+                <Button
+                    android:id="@+id/btn_shopping_channel"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="逛逛去"
+                    android:textColor="@color/black"
+                    android:textSize="17sp" />
+            </LinearLayout>
 
         </RelativeLayout>
     </ScrollView>
