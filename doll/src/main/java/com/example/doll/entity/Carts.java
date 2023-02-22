@@ -16,7 +16,7 @@ public class Carts {
 
     Long finalTotal;
 
-    List<CartResponse> cartResponseList;
+    List<CartResponse> carts;
 
     //    public CartsResponse(List<CartResponse> cartResponseList) {
 //        this.cartResponseList = cartResponseList;
@@ -42,11 +42,11 @@ public class Carts {
         this.finalTotal = finalTotal;
     }
 
-    public List<CartResponse> getCartResponseList() {
-        return cartResponseList;
+    public List<CartResponse> getCarts() {
+        return carts;
     }
 
-    public void setCartResponseList(List<CartResponse> cartResponseList) {
-        this.cartResponseList = cartResponseList;
+    public void setCarts(List<CartResponse> carts) {
+        this.carts = carts;
     }
 }

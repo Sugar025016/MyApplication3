@@ -73,10 +73,8 @@ public class ShoppingActivity extends AppCompatActivity {
                 Intent intent = new Intent(ShoppingActivity.this, ShoppingCartActivity.class);
                 intent.putExtra("header",header);
                 startActivity(intent);
-
             }
         });
-
 
         tv_count = findViewById(R.id.tv_count);
 
@@ -85,13 +83,10 @@ public class ShoppingActivity extends AppCompatActivity {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
-
     }
 
 
     void runCort() throws IOException {
-
         OkHttpClient client = new OkHttpClient();
         System.out.println("--------header--------"+header);
 
@@ -105,14 +100,11 @@ public class ShoppingActivity extends AppCompatActivity {
             @Override
             public void onFailure(Call call, IOException e) {
                 call.cancel();
-
             }
 
             @Override
             public void onResponse(Call call, Response response) throws IOException {
-
                 final String myResponse = response.body().string();
-
                 ShoppingActivity.this.runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
@@ -125,40 +117,30 @@ public class ShoppingActivity extends AppCompatActivity {
                         cartsResponse = gson.fromJson(responseData.getData().toString(), Carts.class);
                         System.out.println("/////cartsResponse//////"+cartsResponse.getTotal());
 //                        if(cartsResponse.getTotal()!=null){
-                        int sum = cartsResponse.getCartResponseList().stream().mapToInt(v -> v.getQty()).sum();
-
+                        int sum = cartsResponse.getCarts().stream().mapToInt(v -> v.getQty()).sum();
                         tv_count.setText(String.valueOf(sum));
-//                        }
-
                     }
                 });
-
             }
         });
     }
 
 
     void run() throws IOException {
-
         OkHttpClient client = new OkHttpClient();
-
         Request request = new Request.Builder()
                 .url(url)
                 .header("Cookie",header)
                 .build();
-
         client.newCall(request).enqueue(new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
                 call.cancel();
-
             }
 
             @Override
             public void onResponse(Call call, Response response) throws IOException {
-
                 final String myResponse = response.body().string();
-
                 ShoppingActivity.this.runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
@@ -167,10 +149,8 @@ public class ShoppingActivity extends AppCompatActivity {
                 products = gson.fromJson(myResponse, Product[].class);
 //                        txtString.setText(myResponse);
                         showGoods();
-
                     }
                 });
-
             }
         });
     }
@@ -255,6 +235,7 @@ public class ShoppingActivity extends AppCompatActivity {
 //                    Toast.makeText(ShoppingActivity.this, "錯誤", Toast.LENGTH_SHORT).show();
 //                    Looper.loop();
 //                }
+
 
             }
 

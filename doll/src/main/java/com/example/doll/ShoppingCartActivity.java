@@ -184,7 +184,7 @@ public class ShoppingCartActivity extends AppCompatActivity {
         LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(screenWidth, LinearLayout.LayoutParams.WRAP_CONTENT);
         int sum = 0;
         int qtySum = 0;
-        for (CartResponse cartResponse : cartsResponse.getCartResponseList()) {
+        for (CartResponse cartResponse : cartsResponse.getCarts()) {
 
             View view = LayoutInflater.from(ShoppingCartActivity.this).inflate(R.layout.item_cart, null);
             TextView tv_name = view.findViewById(R.id.tv_name);

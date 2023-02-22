@@ -105,7 +105,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
                 // 建立Request，設置連線資訊
                 Request request = new Request.Builder()
-                        .url("http://192.168.43.87:8081/api/login")
+                        .url("http://192.168.43.87:8081/login")
                         .post(formBody) // 使用post連線
                         .build();
 
