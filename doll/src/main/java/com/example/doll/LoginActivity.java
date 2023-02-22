@@ -101,6 +101,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 FormBody formBody = new FormBody.Builder()
                         .add("username", et_account.getText().toString())
                         .add("password", et_password.getText().toString())
+                        .add("remember-me", String.valueOf(ck_remember.isChecked()))
                         .build();
 
                 // 建立Request，設置連線資訊
