@@ -41,8 +41,9 @@ public class ShoppingActivity extends AppCompatActivity {
     private TextView tv_count;
     private String url ="http://192.168.43.87:8081/api/app/products";
     private String urlCart ="http://192.168.43.87:8081/user/cart";
-    private String header;
     private ImageView iv_cart;
+    private static MyApplication myApplication ;
+//    private static MyApplication myApp = (MyApplication) getApplicationContext();
 
     @Override
     public void onResume() {
@@ -60,7 +61,7 @@ public class ShoppingActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_shopping);
-        header = getIntent().getStringExtra("header");
+        myApplication= (MyApplication) getApplicationContext();
         gridLayout = findViewById(R.id.gl_channel);
         ImageView iv_cart = (ImageView) findViewById(R.id.iv_cart);
         iv_cart.setClickable(true);
@@ -71,7 +72,6 @@ public class ShoppingActivity extends AppCompatActivity {
 //                        "The favorite list would appear on clicking this icon",
 //                        Toast.LENGTH_LONG).show();
                 Intent intent = new Intent(ShoppingActivity.this, ShoppingCartActivity.class);
-                intent.putExtra("header",header);
                 startActivity(intent);
             }
         });
@@ -88,11 +88,10 @@ public class ShoppingActivity extends AppCompatActivity {
 
     void runCort() throws IOException {
         OkHttpClient client = new OkHttpClient();
-        System.out.println("--------header--------"+header);
 
         Request request = new Request.Builder()
                 .url(urlCart)
-                .header("Cookie",header)
+                .header("Cookie",myApplication.getCookie())
                 .build();
         System.out.println("--------Cookie--------"+request.headers("Cookie"));
 
@@ -114,11 +113,15 @@ public class ShoppingActivity extends AppCompatActivity {
                          responseData = gson.fromJson(myResponse,  responseData.getClass());
                         System.out.println("///////////"+responseData.getData());
                         Carts cartsResponse = new Carts();
-                        cartsResponse = gson.fromJson(responseData.getData().toString(), Carts.class);
-                        System.out.println("/////cartsResponse//////"+cartsResponse.getTotal());
+                        if(responseData.getData()!=null){
+
+                            cartsResponse = gson.fromJson(responseData.getData().toString(), Carts.class);
+                            System.out.println("/////cartsResponse//////"+cartsResponse.getTotal());
+                            int sum = cartsResponse.getCarts().stream().mapToInt(v -> v.getQty()).sum();
+                            tv_count.setText(String.valueOf(sum));
+                        }
 //                        if(cartsResponse.getTotal()!=null){
-                        int sum = cartsResponse.getCarts().stream().mapToInt(v -> v.getQty()).sum();
-                        tv_count.setText(String.valueOf(sum));
+
                     }
                 });
             }
@@ -130,7 +133,7 @@ public class ShoppingActivity extends AppCompatActivity {
         OkHttpClient client = new OkHttpClient();
         Request request = new Request.Builder()
                 .url(url)
-                .header("Cookie",header)
+                .header("Cookie",myApplication.getCookie())
                 .build();
         client.newCall(request).enqueue(new Callback() {
             @Override
@@ -194,9 +197,12 @@ public class ShoppingActivity extends AppCompatActivity {
         // 建立Request，設置連線資訊
         Request request = new Request.Builder()
                 .url(postUrl)
-                .header("Cookie",header)
+                .header("Cookie",myApplication.getCookie())
+                .header("x-xsrf-token",myApplication.getXsrf())
                 .post(requestBody) // 使用post連線
                 .build();
+        System.out.println("--------Cookie--------"+request.headers("x-xsrf-token"));
+        System.out.println("--------Cookie--------"+request.headers("Cookie"));
 
         // 建立Call
         okhttp3.Call call = client.newCall(request);

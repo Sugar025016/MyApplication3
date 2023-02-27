@@ -29,7 +29,6 @@ import okhttp3.Response;
 
 public class ShoppingCartActivity extends AppCompatActivity {
 
-    private String header;
     private String urlCart = "http://192.168.43.87:8081/user/cart";
     private String urlClear = "http://192.168.43.87:8081/user/cart";
     private Carts cartsResponse;
@@ -41,13 +40,15 @@ public class ShoppingCartActivity extends AppCompatActivity {
     private TextView tv_total_price;
     private Button btn_clear;
     private Button btn_shopping_channel;
+    private Button btn_settle;
+    private static MyApplication myApplication ;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_shopping_cart);
-        header = getIntent().getStringExtra("header");
+        myApplication= (MyApplication) getApplicationContext();
         ll_cart = findViewById(R.id.ll_cart);
         ll_empty = findViewById(R.id.ll_empty);
         ll_settle = findViewById(R.id.ll_settle);
@@ -55,6 +56,14 @@ public class ShoppingCartActivity extends AppCompatActivity {
         tv_total_price = findViewById(R.id.tv_total_price);
         btn_clear = findViewById(R.id.btn_clear);
         btn_shopping_channel = findViewById(R.id.btn_shopping_channel);
+        btn_settle = findViewById(R.id.btn_settle);
+        btn_settle.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                    Intent intent = new Intent(ShoppingCartActivity.this, CheckoutActivity.class);
+                    startActivity(intent);
+                }
+            });
         btn_clear.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -71,7 +80,6 @@ public class ShoppingCartActivity extends AppCompatActivity {
             public void onClick(View v) {
 
                 Intent intent = new Intent(  ShoppingCartActivity.this, ShoppingActivity.class);
-                intent.putExtra("header",header);
                 startActivity(intent);
             }
         });
@@ -87,15 +95,14 @@ public class ShoppingCartActivity extends AppCompatActivity {
     void runClear() throws IOException {
 
         OkHttpClient client = new OkHttpClient();
-        System.out.println("--------header--------" + header);
         tv_count = findViewById(R.id.tv_count);
 
         Request request = new Request.Builder()
                 .url(urlCart)
                 .delete()
-                .header("Cookie", header)
+                .header("Cookie", myApplication.getCookie())
+                .header("x-xsrf-token", myApplication.getXsrf())
                 .build();
-        System.out.println("--------Cookie--------" + request.headers("Cookie"));
 
         client.newCall(request).enqueue(new Callback() {
             @Override
@@ -137,14 +144,12 @@ public class ShoppingCartActivity extends AppCompatActivity {
     void runCart() throws IOException {
 
         OkHttpClient client = new OkHttpClient();
-        System.out.println("--------header--------" + header);
         tv_count = findViewById(R.id.tv_count);
 
         Request request = new Request.Builder()
                 .url(urlCart)
-                .header("Cookie", header)
+                .header("Cookie", myApplication.getCookie())
                 .build();
-        System.out.println("--------Cookie--------" + request.headers("Cookie"));
 
         client.newCall(request).enqueue(new Callback() {
             @Override
@@ -238,13 +243,11 @@ public class ShoppingCartActivity extends AppCompatActivity {
 
 
         OkHttpClient client = new OkHttpClient();
-        System.out.println("--------header--------" + header);
 
         Request request = new Request.Builder()
                 .url("http://192.168.43.87:8081/api/product/" + id)
-                .header("Cookie", header)
+                .header("Cookie", myApplication.getCookie())
                 .build();
-        System.out.println("--------Cookie--------" + request.headers("Cookie"));
 
         client.newCall(request).enqueue(new Callback() {
             @Override
@@ -301,14 +304,13 @@ public class ShoppingCartActivity extends AppCompatActivity {
 
 
         OkHttpClient client = new OkHttpClient();
-        System.out.println("--------header--------" + header);
 
         Request request = new Request.Builder()
                 .url("http://192.168.43.87:8081/user/cart/" + id)
                 .delete()
-                .header("Cookie", header)
+                .header("Cookie", myApplication.getCookie())
+                .header("x-xsrf-token", myApplication.getXsrf())
                 .build();
-        System.out.println("--------Cookie--------" + request.headers("Cookie"));
 
         client.newCall(request).enqueue(new Callback() {
             @Override

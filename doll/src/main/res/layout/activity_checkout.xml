@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/item_layout_height"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:text="@string/email"
+            android:textColor="@color/black"
+            android:textSize="@dimen/common_font_size" />
+
+        <EditText
+            android:id="@+id/et_email"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp"
+            android:layout_weight="1"
+            android:hint="@string/input_email"
+            android:inputType="textEmailAddress"
+            android:maxLength="30"
+            android:textColor="@color/black"
+            android:textColorHint="@color/grey"
+            android:textSize="@dimen/common_font_size" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/item_layout_height"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:text="@string/addressee_name"
+            android:textColor="@color/black"
+            android:textSize="@dimen/common_font_size" />
+
+        <EditText
+            android:id="@+id/et_addressee_name"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp"
+            android:layout_weight="1"
+
+            android:hint="@string/input_addressee_name"
+            android:inputType="text"
+            android:maxLength="5"
+            android:textColor="@color/black"
+            android:textColorHint="@color/grey"
+            android:textSize="@dimen/common_font_size" />
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/item_layout_height"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:text="@string/addressee_phone"
+            android:textColor="@color/black"
+            android:textSize="@dimen/common_font_size" />
+
+        <EditText
+            android:id="@+id/et_addressee_phone"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp"
+            android:layout_weight="1"
+
+            android:hint="@string/input_addressee_phone"
+            android:inputType="phone"
+            android:maxLength="9"
+            android:textColor="@color/black"
+            android:textColorHint="@color/grey"
+            android:textSize="@dimen/common_font_size" />
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/item_layout_height"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:text="@string/addressee_address"
+            android:textColor="@color/black"
+            android:textSize="@dimen/common_font_size" />
+
+        <EditText
+            android:id="@+id/et_addressee_address"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp"
+            android:layout_weight="1"
+
+            android:hint="@string/input_addressee_address"
+            android:inputType="textPostalAddress"
+            android:maxLength="50"
+            android:textColor="@color/black"
+            android:textColorHint="@color/grey"
+            android:textSize="@dimen/common_font_size" />
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:text="@string/message"
+            android:textColor="@color/black"
+            android:textSize="@dimen/common_font_size" />
+
+
+    </LinearLayout>
+
+    <EditText
+        android:id="@+id/et_message"
+        android:background="@drawable/shape_oval_gold"
+        android:layout_width="match_parent"
+        android:lines="8"
+        android:layout_height="wrap_content"
+        android:inputType="text|textMultiLine"
+        android:paddingLeft="15dp"
+        android:paddingTop="15dp"
+        android:paddingBottom="15dp"
+        android:paddingRight="15dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="20dp"
+        android:hint="@string/input_message"
+        android:gravity="top"/>
+
+    <Button
+        android:id="@+id/btn_send_order"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/send_order"
+        android:textColor="@color/black"
+        android:textSize="@dimen/common_font_size" />
+
+</LinearLayout>

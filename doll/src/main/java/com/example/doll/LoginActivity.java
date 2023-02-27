@@ -25,18 +25,30 @@ import com.example.doll.entity.ResponseData;
 import com.example.doll.util.ViewUtil;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 import java.util.Random;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 
 import okhttp3.Callback;
 import okhttp3.FormBody;
+import okhttp3.Headers;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
+import okhttp3.internal.http.HttpMethod;
+
+import com.google.firebase.crashlytics.buildtools.reloc.com.google.common.net.HttpHeaders;
 import com.google.gson.Gson;
 
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
     OkHttpClient client = new OkHttpClient().newBuilder().build();
+
 
     private TextView tv_password;
     private EditText et_password;
@@ -44,12 +56,13 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private Button btn_login;
     private CheckBox ck_remember;
     private EditText et_account;
-
     private ActivityResultLauncher<Intent> register;
+    private static MyApplication myApplication ;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+        myApplication= (MyApplication) getApplicationContext();
 
         tv_password= findViewById(R.id.tv_password);
         et_account= findViewById(R.id.et_account);
@@ -138,9 +151,25 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
                     @Override
                     public void onResponse(okhttp3.Call call, Response response) throws IOException {
+
+//                        String header = response.header("Set-Cookie");
+//                        Log.d("response", header);
+                        String header="";
                         // 連線成功，自response取得連線結果
-                        String header = response.header("Set-Cookie");
-                        Log.d("response", header);
+                        List<String> values = response.headers().values("Set-Cookie");
+                        for (String value : values) {
+                            header=header+value+";";
+                            String[] pairs = value.split(";");
+                            Optional<String> first = Arrays.stream(pairs).filter(v ->
+                                    v.split("=")[0].equals("XSRF-TOKEN")
+                            ).collect(Collectors.toList()).stream().findFirst();
+                            if(first.isPresent()){
+                                myApplication.setXsrf(first.get().split("=")[1]);
+                            }
+                        }
+                        myApplication.setCookie(header);
+                        Log.d("response-header", header);
+
                         String result = response.body().string();
                         Log.d("OkHttp result", result);
 //                        new Intent(this,ShoppingActivity.class)‘
@@ -151,7 +180,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
                         if(responseData.isSuccess()){
                             Intent intent = new Intent(LoginActivity.this, ShoppingActivity.class);
-                            intent.putExtra("header",header);
                             startActivity(intent);
                         }else {
                           Looper.prepare();
