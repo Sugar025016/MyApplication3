@@ -282,7 +282,8 @@ public class ShoppingCartActivity extends AppCompatActivity {
                             tv_name.setText(product.getTitle());
 
                             if (product.getImageUrl() != null) {
-                                String url = "http://192.168.43.87:8082/img/" + product.getImageUrl();
+                                String url = "http://192.168.43.87:8082" +
+                                        "/" + product.getImageUrl();
 
                                 Glide.with(iv_thumb.getContext())
                                         .load(url)

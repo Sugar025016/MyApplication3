@@ -17,14 +17,19 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.example.doll.entity.Carts;
+import com.example.doll.entity.Page;
 import com.example.doll.entity.Product;
 import com.example.doll.entity.ResponseData;
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.lang.reflect.Type;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -36,13 +41,14 @@ import okhttp3.Response;
 
 public class ShoppingActivity extends AppCompatActivity {
     OkHttpClient client = new OkHttpClient().newBuilder().build();
-    private Product[] products;
+    private List<Product> products;
     private GridLayout gridLayout;
     private TextView tv_count;
-    private String url ="http://192.168.43.87:8081/api/app/products";
+    private String url ="http://192.168.43.87:8081/api/products";
     private String urlCart ="http://192.168.43.87:8081/user/cart";
     private ImageView iv_cart;
     private static MyApplication myApplication ;
+    private ResponseData<List<Product>> responseData;
 //    private static MyApplication myApp = (MyApplication) getApplicationContext();
 
     @Override
@@ -130,7 +136,7 @@ public class ShoppingActivity extends AppCompatActivity {
 
 
     void run() throws IOException {
-        OkHttpClient client = new OkHttpClient();
+          client = new OkHttpClient();
         Request request = new Request.Builder()
                 .url(url)
                 .header("Cookie",myApplication.getCookie())
@@ -149,9 +155,18 @@ public class ShoppingActivity extends AppCompatActivity {
                     public void run() {
                 Log.d("OkHttp result", myResponse);
                                         Gson gson = new Gson();
-                products = gson.fromJson(myResponse, Product[].class);
-//                        txtString.setText(myResponse);
+                        Type type = new TypeToken<ResponseData<Page<List<Product>>>>() {}.getType();
+                        responseData = gson.fromJson(myResponse, type);
+                        List<Product> productList=new ArrayList<>();
+                        System.out.println("-------responseData.getData:"+responseData.getData());
+                        System.out.println("-------((Page<List<Product>>)responseData.getData()).getContent():"+((Page<List<Product>>)responseData.getData()).getPageSet().getCurrentPage());
+                        products= (List<Product>) ((Page<List<Product>>)responseData.getData()).getContent();
+//                        System.out.println("-------productList:"+productList.get(0).getImageUrl());
+                    if(responseData.isSuccess()){
                         showGoods();
+                    }
+//                        txtString.setText(myResponse);
+
                     }
                 });
             }
@@ -168,7 +183,7 @@ public class ShoppingActivity extends AppCompatActivity {
             TextView tv_price = view.findViewById(R.id.tv_price);
             TextView btn_add = view.findViewById(R.id.btn_add);
             if(product.getImageUrl()!=null){
-                String url = "http://192.168.43.87:8082/img/" + product.getImageUrl();
+                String url =  product.getImageUrl().replace("localhost","192.168.43.87");
 
                 Glide.with(iv_thumb.getContext())
                         .load(url)
