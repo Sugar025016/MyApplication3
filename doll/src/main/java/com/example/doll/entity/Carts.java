@@ -16,13 +16,8 @@ public class Carts {
 
     Long finalTotal;
 
-    List<CartResponse> carts;
+    List<CartResponse> cartResponseList;
 
-    //    public CartsResponse(List<CartResponse> cartResponseList) {
-//        this.cartResponseList = cartResponseList;
-//        finalTotal=cartResponseList.stream().mapToLong(CartResponse::getTotal).sum();
-//        total=cartResponseList.stream().mapToLong(CartResponse::getTotalOriginPrice).sum();
-//    }
     public Carts() {
     }
 
@@ -43,10 +38,10 @@ public class Carts {
     }
 
     public List<CartResponse> getCarts() {
-        return carts;
+        return cartResponseList;
     }
 
     public void setCarts(List<CartResponse> carts) {
-        this.carts = carts;
+        this.cartResponseList = carts;
     }
 }
