@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:drawable="@drawable/repeat_stop">
+        <shape android:shape="oval">
+            <solid android:color="@null" />
+            <size android:width="78dp" android:height="78dp" />
+            <rotate
+                android:pivotX="0"
+                android:pivotY="0"
+                android:fromDegrees="-30"
+                android:toDegrees="-30" />
+        </shape>
+    </item>
+    <item android:drawable="@drawable/repeat_all"
+        android:width="70dp"
+        android:height="70dp"
+        android:gravity="center" />
+
+</layer-list>

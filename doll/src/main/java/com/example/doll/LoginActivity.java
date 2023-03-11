@@ -6,9 +6,12 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.Manifest;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Looper;
 import android.text.Editable;
@@ -50,6 +53,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     OkHttpClient client = new OkHttpClient().newBuilder().build();
 
 
+    private static final int REQUEST_ACCESS_FINE_LOCATION= 102;
     private TextView tv_password;
     private EditText et_password;
     private Button btn_forget;
@@ -62,8 +66,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+        checkPermission();
         myApplication= (MyApplication) getApplicationContext();
-
         tv_password= findViewById(R.id.tv_password);
         et_account= findViewById(R.id.et_account);
         et_account.setText("sugar025016@gmail.com");
@@ -83,11 +87,20 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             public void onActivityResult(ActivityResult result) {
                 Intent intent = result.getData();
                 if(intent != null && result.getResultCode() == Activity.RESULT_OK){
+
 //                    mpassword = intent.getStringExtra("new_password");
                 }
 
             }
         });
+
+    }
+    private void checkPermission(){
+        int i = checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION);
+        if(i!= PackageManager.PERMISSION_GRANTED){
+            requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION},REQUEST_ACCESS_FINE_LOCATION);
+        }
+
 
     }
 

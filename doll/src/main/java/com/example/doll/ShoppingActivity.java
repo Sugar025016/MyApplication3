@@ -2,7 +2,9 @@ package com.example.doll;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
@@ -41,6 +43,8 @@ import okhttp3.Response;
 
 public class ShoppingActivity extends AppCompatActivity {
     OkHttpClient client = new OkHttpClient().newBuilder().build();
+
+    private static final int REQUEST_ACCESS_FINE_LOCATION= 102;
     private List<Product> products;
     private GridLayout gridLayout;
     private TextView tv_count;
@@ -60,13 +64,27 @@ public class ShoppingActivity extends AppCompatActivity {
         } catch (IOException e) {
             e.printStackTrace();
         }
-    }
+        try {
+            runCort();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
+    }
+    private void checkPermission(){
+        int i = checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION);
+        if(i!= PackageManager.PERMISSION_GRANTED){
+            requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION},REQUEST_ACCESS_FINE_LOCATION);
+        }
+
+
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_shopping);
+        checkPermission();
         myApplication= (MyApplication) getApplicationContext();
         gridLayout = findViewById(R.id.gl_channel);
         ImageView iv_cart = (ImageView) findViewById(R.id.iv_cart);
@@ -84,11 +102,7 @@ public class ShoppingActivity extends AppCompatActivity {
 
         tv_count = findViewById(R.id.tv_count);
 
-        try {
-            runCort();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+
     }
 
 
