@@ -115,21 +115,21 @@ public class MusicActivity extends AppCompatActivity implements View.OnClickList
                 break;
             case R.id.previous_button:
                 playI--;
-                if(playI>=0){
+                if (playI >= 0) {
                     play();
-                }else {
-                    playI=0;
+                } else {
+                    playI = 0;
                     Toast.makeText(this, "這是第一首", Toast.LENGTH_SHORT).show();
                 }
 
                 break;
             case R.id.next_button:
                 playI++;
-                if(playI<integers.size()){
+                if (playI < integers.size()) {
 
                     play();
-                }else {
-                    playI=integers.size()-1;
+                } else {
+                    playI = integers.size() - 1;
                     Toast.makeText(this, "這是最後一首", Toast.LENGTH_SHORT).show();
                 }
 
@@ -140,7 +140,7 @@ public class MusicActivity extends AppCompatActivity implements View.OnClickList
         }
     }
 
-    public void repeatStatus(){
+    public void repeatStatus() {
         counter++;
         switch (counter % 3) {
             case 0:
@@ -152,13 +152,13 @@ public class MusicActivity extends AppCompatActivity implements View.OnClickList
                 mediaPlayer.setLooping(true);
                 break;
             case 2:
-                repeat_status.setImageResource(R.drawable.repeat_stop_all);
+                repeat_status.setImageResource(R.drawable.repeat_all_off);
                 mediaPlayer.setLooping(false);
                 break;
         }
     }
 
-    public void play( ) {
+    public void play() {
         setMediaPlayer();
         playButton.setVisibility(View.GONE);
         pauseButton.setVisibility(View.VISIBLE);
@@ -166,22 +166,22 @@ public class MusicActivity extends AppCompatActivity implements View.OnClickList
 
     }
 
-    public void setMediaPlayer( ) {
+    public void setMediaPlayer() {
 
-        if (playI < 0 ) {
-            playI=0;
+        if (playI < 0) {
+            playI = 0;
         }
         if (playI >= integers.size()) {
-            playI=integers.size()-1;
+            playI = integers.size() - 1;
         }
         if (mediaPlayer != null) {
             mediaPlayer.stop();
             mediaPlayer.release();
         }
         // 使用 MediaPlayer 播放音樂
-        int resId=integers.get(playI);
+        int resId = integers.get(playI);
         mediaPlayer = MediaPlayer.create(this, resId);
-        if(counter % 3==1){
+        if (counter % 3 == 1) {
             mediaPlayer.setLooping(true);
         }
 //        mediaPlayer.setLooping(true);
@@ -206,18 +206,23 @@ public class MusicActivity extends AppCompatActivity implements View.OnClickList
                 playButton.setVisibility(View.VISIBLE);
                 pauseButton.setVisibility(View.GONE);
                 playI++;
-                handler.removeCallbacksAndMessages(null);
-                if(counter % 3==0 ){
 
-                    if( playI>=integers.size()) {
-                        playI = 0;
+                handler.removeCallbacksAndMessages(null);
+
+                if (playI >= integers.size()) {
+                    System.out.println("playI:  "+playI);
+                    playI = 0;
+                    if (counter % 3 == 0) {
+                        System.out.println("counter:  "+counter);
+
+                        play();
+                    } else {
+                        setMediaPlayer();
                     }
-                    play( );
                 }else {
-                    setMediaPlayer();
+                    play();
 
                 }
-
             }
         });
         // 取得音樂檔案名稱
