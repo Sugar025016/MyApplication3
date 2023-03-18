@@ -2,15 +2,25 @@ package com.example.musicapplication;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.PendingIntent;
+import android.content.BroadcastReceiver;
+import android.content.ComponentName;
+import android.content.Context;
+import android.content.Intent;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.support.v4.media.session.MediaSessionCompat;
+import android.support.v4.media.session.PlaybackStateCompat;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.example.musicapplication.util.MediaButtonReceiver;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -33,6 +43,10 @@ public class MusicActivity extends AppCompatActivity implements View.OnClickList
 
     private List<Integer> integers;
 
+
+    private MediaSessionCompat mediaSession;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -53,6 +67,57 @@ public class MusicActivity extends AppCompatActivity implements View.OnClickList
 
         repeat_status = findViewById(R.id.repeat_status);
         repeat_status.setOnClickListener(this);
+
+
+
+        ComponentName componentName = new ComponentName(this, MediaButtonReceiver.class.getName());
+
+
+        mediaSession = new MediaSessionCompat(this, "tag",componentName,null);
+
+        // 设置 MediaSessionCompat 的回调对象
+        mediaSession.setCallback(new MediaSessionCompat.Callback() {
+                                     @Override
+                                     public void onPlay() {
+                                         super.onPlay();
+                                         Toast.makeText(MusicActivity.this, "onPlay()", Toast.LENGTH_SHORT).show();
+                                     }
+
+                                     @Override
+                                     public void onPause() {
+                                         super.onPause();
+                                         Toast.makeText(MusicActivity.this, "onPause()", Toast.LENGTH_SHORT).show();
+                                     }
+
+                                     @Override
+                                     public void onSkipToNext() {
+                                         super.onSkipToNext();
+                                         Toast.makeText(MusicActivity.this, "onSkipToNext()", Toast.LENGTH_SHORT).show();
+                                     }
+
+                                     @Override
+                                     public void onSkipToPrevious() {
+                                         super.onSkipToPrevious();
+                                         Toast.makeText(MusicActivity.this, "onSkipToPrevious()", Toast.LENGTH_SHORT).show();
+                                     }
+                                 });
+
+
+
+        mediaSession.setFlags(MediaSessionCompat.FLAG_HANDLES_MEDIA_BUTTONS);
+        // 激活 MediaSessionCompat
+        mediaSession.setActive(true);
+
+
+        PlaybackStateCompat state = new PlaybackStateCompat.Builder() .setActions(
+                PlaybackStateCompat.ACTION_PLAY |
+                        PlaybackStateCompat.ACTION_PLAY_PAUSE |
+                        PlaybackStateCompat.ACTION_PAUSE |
+                        PlaybackStateCompat.ACTION_SKIP_TO_NEXT |
+                        PlaybackStateCompat.ACTION_SKIP_TO_PREVIOUS
+        ).build();
+
+        mediaSession.setPlaybackState(state);
 
 
         seekBar = findViewById(R.id.seek_bar);
@@ -92,9 +157,13 @@ public class MusicActivity extends AppCompatActivity implements View.OnClickList
         }
     }
 
+
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        mediaSession.setCallback(null);
+        mediaSession.setActive(false);
+        mediaSession.release();
         mediaPlayer.release();
     }
 
@@ -240,5 +309,23 @@ public class MusicActivity extends AppCompatActivity implements View.OnClickList
                 (mm < 10 ? ("0" + mm) : mm) + ":" +
                 (ss < 10 ? ("0" + ss) : ss);
     }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        System.out.println("1111111111onStart");
+        // 激活 MediaSessionCompat
+        mediaSession.setActive(true);
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        System.out.println("22222222222onStop");
+
+        // 停用 MediaSessionCompat
+        mediaSession.setActive(false);
+    }
+
 
 }
