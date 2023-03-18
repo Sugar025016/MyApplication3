@@ -79,36 +79,35 @@ public class MusicActivity extends AppCompatActivity implements View.OnClickList
         mediaSession.setCallback(new MediaSessionCompat.Callback() {
                                      @Override
                                      public void onPlay() {
-                                         super.onPlay();
+//                                         super.onPlay();
+                                         play();
                                          Toast.makeText(MusicActivity.this, "onPlay()", Toast.LENGTH_SHORT).show();
                                      }
 
                                      @Override
                                      public void onPause() {
-                                         super.onPause();
+                                         play();
                                          Toast.makeText(MusicActivity.this, "onPause()", Toast.LENGTH_SHORT).show();
                                      }
 
                                      @Override
                                      public void onSkipToNext() {
-                                         super.onSkipToNext();
+                                         next();
                                          Toast.makeText(MusicActivity.this, "onSkipToNext()", Toast.LENGTH_SHORT).show();
                                      }
 
                                      @Override
                                      public void onSkipToPrevious() {
-                                         super.onSkipToPrevious();
+                                         previous();
                                          Toast.makeText(MusicActivity.this, "onSkipToPrevious()", Toast.LENGTH_SHORT).show();
                                      }
                                  });
-
-
 
         mediaSession.setFlags(MediaSessionCompat.FLAG_HANDLES_MEDIA_BUTTONS);
         // 激活 MediaSessionCompat
         mediaSession.setActive(true);
 
-
+        // 描述媒体播放的状态(很重要，沒加入會沒動作)
         PlaybackStateCompat state = new PlaybackStateCompat.Builder() .setActions(
                 PlaybackStateCompat.ACTION_PLAY |
                         PlaybackStateCompat.ACTION_PLAY_PAUSE |
@@ -116,7 +115,6 @@ public class MusicActivity extends AppCompatActivity implements View.OnClickList
                         PlaybackStateCompat.ACTION_SKIP_TO_NEXT |
                         PlaybackStateCompat.ACTION_SKIP_TO_PREVIOUS
         ).build();
-
         mediaSession.setPlaybackState(state);
 
 
@@ -172,41 +170,22 @@ public class MusicActivity extends AppCompatActivity implements View.OnClickList
 
         switch (v.getId()) {
             case R.id.playButton:
-                playButton.setVisibility(View.GONE);
-                pauseButton.setVisibility(View.VISIBLE);
-                mediaPlayer.start();
-
-                break;
-            case R.id.pauseButton:
-                playButton.setVisibility(View.VISIBLE);
-                pauseButton.setVisibility(View.GONE);
-                mediaPlayer.pause();
+                play();
                 break;
             case R.id.previous_button:
-                playI--;
-                if (playI >= 0) {
-                    play();
-                } else {
-                    playI = 0;
-                    Toast.makeText(this, "這是第一首", Toast.LENGTH_SHORT).show();
-                }
+                previous();
 
                 break;
             case R.id.next_button:
-                playI++;
-                if (playI < integers.size()) {
-
-                    play();
-                } else {
-                    playI = integers.size() - 1;
-                    Toast.makeText(this, "這是最後一首", Toast.LENGTH_SHORT).show();
-                }
+                next();
 
                 break;
             case R.id.repeat_status:
                 repeatStatus();
                 break;
         }
+
+
     }
 
     public void repeatStatus() {
@@ -227,11 +206,42 @@ public class MusicActivity extends AppCompatActivity implements View.OnClickList
         }
     }
 
-    public void play() {
+    void play() {
+        if (mediaPlayer.isPlaying()) {
+            mediaPlayer.pause();
+            playButton.setImageResource(R.drawable.play_selector);
+
+        } else {
+            mediaPlayer.start();
+            playButton.setImageResource(R.drawable.pause_selector);
+        }
+    }
+
+    public void next() {
+        playI++;
+        if (playI < integers.size()) {
+
+            nextOrPrevious();
+        } else {
+            playI = integers.size() - 1;
+            Toast.makeText(this, "這是最後一首", Toast.LENGTH_SHORT).show();
+        }
+
+    }
+
+    public void previous() {
+        playI--;
+        if (playI >= 0) {
+            nextOrPrevious();
+        } else {
+            playI = 0;
+            Toast.makeText(this, "這是第一首", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    public void nextOrPrevious() {
         setMediaPlayer();
-        playButton.setVisibility(View.GONE);
-        pauseButton.setVisibility(View.VISIBLE);
-        mediaPlayer.start();
+        play();
 
     }
 
@@ -272,24 +282,22 @@ public class MusicActivity extends AppCompatActivity implements View.OnClickList
             public void onCompletion(MediaPlayer mp) {
                 // 音樂播放完畢
                 // 在這裡可以執行下一首音樂的播放等操作
-                playButton.setVisibility(View.VISIBLE);
-                pauseButton.setVisibility(View.GONE);
+                playButton.setImageResource(R.drawable.play_selector);
                 playI++;
-
                 handler.removeCallbacksAndMessages(null);
 
                 if (playI >= integers.size()) {
-                    System.out.println("playI:  "+playI);
+                    System.out.println("playI:  " + playI);
                     playI = 0;
                     if (counter % 3 == 0) {
-                        System.out.println("counter:  "+counter);
+                        System.out.println("counter:  " + counter);
 
-                        play();
+                        nextOrPrevious();
                     } else {
                         setMediaPlayer();
                     }
-                }else {
-                    play();
+                } else {
+                    nextOrPrevious();
 
                 }
             }

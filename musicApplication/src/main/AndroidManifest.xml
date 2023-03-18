@@ -3,10 +3,10 @@
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.MEDIA_CONTENT_CONTROL"
-        tools:ignore="ProtectedPermissions" />
-    <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
-    <uses-permission android:name="android.permission.RECEIVE_MEDIA_BUTTONS" />
+<!--    <uses-permission android:name="android.permission.MEDIA_CONTENT_CONTROL"-->
+<!--        tools:ignore="ProtectedPermissions" />-->
+<!--    <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />-->
+<!--    <uses-permission android:name="android.permission.RECEIVE_MEDIA_BUTTONS" />-->
     <application
         android:allowBackup="true"
         android:appCategory="audio"
@@ -16,32 +16,19 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MyApplication">
 
-<!--        <meta-data-->
-<!--            android:name="com.google.android.gms.car.application"-->
-<!--            android:resource="@xml/automotive_app_desc" />-->
         <receiver android:name=".util.MediaButtonReceiver"
             android:enabled="true"
             android:exported="true">
             <intent-filter>
-                <action android:name="android.intent.action.MEDIA_BUTTON" />
                 <action android:name="android.media.AUDIO_BECOMING_NOISY" />
             </intent-filter>
         </receiver>
-
-<!--        <receiver android:name="android.support.v4.media.session.MediaButtonReceiver">-->
-<!--            <intent-filter>-->
-<!--                <action android:name="android.intent.action.MEDIA_BUTTON" />-->
-<!--                <action android:name="android.media.AUDIO_BECOMING_NOISY" />-->
-<!--            </intent-filter>-->
-<!--        </receiver>-->
         <activity
             android:name=".MusicActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <action android:name="android.intent.action.MEDIA_BUTTON" />
-                <action android:name="android.media.AUIDO_BECOMING_NOISY" />
-                <action android:name="android.intent.action.BOOT_COMPLETED" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
 

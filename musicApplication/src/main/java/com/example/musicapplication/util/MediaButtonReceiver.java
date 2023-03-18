@@ -4,7 +4,11 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v4.media.session.MediaSessionCompat;
+import android.util.Log;
 import android.view.KeyEvent;
+import android.widget.Toast;
+
+import com.example.musicapplication.MusicActivity;
 
 public class MediaButtonReceiver extends BroadcastReceiver {
     private MediaSessionCompat mediaSession;
@@ -12,7 +16,9 @@ public class MediaButtonReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
         System.out.println("~~MediaButtonReceiver~~~~~~~~~~~~~~~");
+        Log.d("~~MediaButtonReceiver~~~~~~~~~~~~~~~","~~MediaButtonReceiver~~~~~~~~~~~~~~~");
         if (Intent.ACTION_MEDIA_BUTTON.equals(intent.getAction())) {
+
             System.out.println("~~MediaButtonReceiver~~~~~~~~~~~~~~~");
             if (mediaSession == null) {
                 mediaSession = new MediaSessionCompat(context, "MediaButtonReceiver");
