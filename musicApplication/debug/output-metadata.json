@@ -9,7 +9,7 @@
   "elements": [
     {
       "type": "SINGLE",
-      "filters": ["*.mp3", "*.wav"],
+      "filters": [],
       "attributes": [],
       "versionCode": 1,
       "versionName": "1.0",

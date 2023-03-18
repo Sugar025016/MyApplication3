@@ -24,6 +24,7 @@
         android:layout_width="180dp"
         android:layout_height="150dp"
         android:scaleType="fitCenter"
+        android:background="@null"
         android:src="@drawable/pp"/>
 
     <LinearLayout
