@@ -69,11 +69,7 @@ public class MusicActivity extends AppCompatActivity implements View.OnClickList
         repeat_status.setOnClickListener(this);
 
 
-
-        ComponentName componentName = new ComponentName(this, MediaButtonReceiver.class.getName());
-
-
-        mediaSession = new MediaSessionCompat(this, "tag",componentName,null);
+        mediaSession = new MediaSessionCompat(this, "tag");
 
         // 设置 MediaSessionCompat 的回调对象
         mediaSession.setCallback(new MediaSessionCompat.Callback() {

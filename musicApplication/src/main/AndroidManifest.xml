@@ -3,10 +3,6 @@
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-<!--    <uses-permission android:name="android.permission.MEDIA_CONTENT_CONTROL"-->
-<!--        tools:ignore="ProtectedPermissions" />-->
-<!--    <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />-->
-<!--    <uses-permission android:name="android.permission.RECEIVE_MEDIA_BUTTONS" />-->
     <application
         android:allowBackup="true"
         android:appCategory="audio"
@@ -16,20 +12,12 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MyApplication">
 
-        <receiver android:name=".util.MediaButtonReceiver"
-            android:enabled="true"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="android.media.AUDIO_BECOMING_NOISY" />
-            </intent-filter>
-        </receiver>
         <activity
             android:name=".MusicActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <action android:name="android.intent.action.MEDIA_BUTTON" />
-                <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
 
             <meta-data
