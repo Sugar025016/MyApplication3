@@ -1,16 +1,24 @@
 package com.example.musicapplication;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
+import android.Manifest;
+import android.annotation.SuppressLint;
 import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.database.Cursor;
 import android.media.MediaPlayer;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.provider.MediaStore;
 import android.support.v4.media.session.MediaSessionCompat;
 import android.support.v4.media.session.PlaybackStateCompat;
 import android.view.KeyEvent;
@@ -22,6 +30,7 @@ import android.widget.Toast;
 
 import com.example.musicapplication.util.MediaButtonReceiver;
 
+import java.io.IOException;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
@@ -45,8 +54,9 @@ public class MusicActivity extends AppCompatActivity implements View.OnClickList
 
 
     private MediaSessionCompat mediaSession;
+    private String path="";
 
-
+//    @SuppressLint("Range")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -135,6 +145,33 @@ public class MusicActivity extends AppCompatActivity implements View.OnClickList
                 // 停止拖動 SeekBar 時不執行任何操作
             }
         });
+
+
+//        String[] projection = { MediaStore.Audio.Media._ID, MediaStore.Audio.Media.ARTIST, MediaStore.Audio.Media.TITLE };
+//        String selection = MediaStore.Audio.Media.IS_MUSIC + "!= 0";
+//        String sortOrder = MediaStore.Audio.Media.TITLE + " ASC";
+//
+//        Cursor cursor = getContentResolver().query(
+//                MediaStore.Audio.Media.EXTERNAL_CONTENT_URI,
+//                projection,
+//                selection,
+//                null,
+//                sortOrder);
+//        // 檢查權限是否已經被授予
+//        if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE)
+//                == PackageManager.PERMISSION_GRANTED) {
+//            // 已經有權限，可以執行訪問外部存儲空間的程式碼
+//            if (cursor != null) {
+//                while (cursor.moveToNext()) {
+//                    // 取得檔案資訊
+//                    String title = cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.TITLE));
+//                    String artist = cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.ARTIST));
+//                    path = cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.DATA));
+//                    // 做些什麼...
+//                }
+//                cursor.close();
+//            }
+//        }
 
         //取/res/raw資料夾下的音樂resId
         Field[] fields = R.raw.class.getFields();
@@ -256,6 +293,11 @@ public class MusicActivity extends AppCompatActivity implements View.OnClickList
         // 使用 MediaPlayer 播放音樂
         int resId = integers.get(playI);
         mediaPlayer = MediaPlayer.create(this, resId);
+//        try {
+//            mediaPlayer.setDataSource(path);
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
         if (counter % 3 == 1) {
             mediaPlayer.setLooping(true);
         }
