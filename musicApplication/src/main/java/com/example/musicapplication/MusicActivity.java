@@ -1,16 +1,25 @@
 package com.example.musicapplication;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
+import android.Manifest;
+import android.annotation.SuppressLint;
 import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.content.res.AssetFileDescriptor;
+import android.database.Cursor;
 import android.media.MediaPlayer;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.provider.MediaStore;
 import android.support.v4.media.session.MediaSessionCompat;
 import android.support.v4.media.session.PlaybackStateCompat;
 import android.view.KeyEvent;
@@ -22,6 +31,9 @@ import android.widget.Toast;
 
 import com.example.musicapplication.util.MediaButtonReceiver;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
@@ -41,16 +53,20 @@ public class MusicActivity extends AppCompatActivity implements View.OnClickList
     private int playI;
     private int counter = 0;
 
-    private List<Integer> integers;
-
+    private List<Uri> integers;
+    public static final int MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE = 123;
 
     private MediaSessionCompat mediaSession;
+    private String path = "";
 
 
+
+    @SuppressLint("Range")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_music);
+
         integers = new ArrayList<>();
         titleTextView = findViewById(R.id.title_text);
         total_time_text = findViewById(R.id.total_time_text);
@@ -67,44 +83,52 @@ public class MusicActivity extends AppCompatActivity implements View.OnClickList
 
         repeat_status = findViewById(R.id.repeat_status);
         repeat_status.setOnClickListener(this);
-
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE)
+                == PackageManager.PERMISSION_GRANTED) {
+            // 已經有權限，可以執行訪問外部存儲空間的程式碼
+        } else {
+            // 沒有權限，需要向用戶請求權限
+            ActivityCompat.requestPermissions(this,
+                    new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
+                    MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE);
+        }
 
         mediaSession = new MediaSessionCompat(this, "tag");
 
         // 设置 MediaSessionCompat 的回调对象
         mediaSession.setCallback(new MediaSessionCompat.Callback() {
-                                     @Override
-                                     public void onPlay() {
+            @Override
+            public void onPlay() {
 //                                         super.onPlay();
-                                         play();
-                                         Toast.makeText(MusicActivity.this, "onPlay()", Toast.LENGTH_SHORT).show();
-                                     }
+                play();
+                Toast.makeText(MusicActivity.this, "onPlay()", Toast.LENGTH_SHORT).show();
+            }
 
-                                     @Override
-                                     public void onPause() {
-                                         play();
-                                         Toast.makeText(MusicActivity.this, "onPause()", Toast.LENGTH_SHORT).show();
-                                     }
+            @Override
+            public void onPause() {
+                play();
+                Toast.makeText(MusicActivity.this, "onPause()", Toast.LENGTH_SHORT).show();
+            }
 
-                                     @Override
-                                     public void onSkipToNext() {
-                                         next();
-                                         Toast.makeText(MusicActivity.this, "onSkipToNext()", Toast.LENGTH_SHORT).show();
-                                     }
+            @Override
+            public void onSkipToNext() {
+                next();
+                Toast.makeText(MusicActivity.this, "onSkipToNext()", Toast.LENGTH_SHORT).show();
+            }
 
-                                     @Override
-                                     public void onSkipToPrevious() {
-                                         previous();
-                                         Toast.makeText(MusicActivity.this, "onSkipToPrevious()", Toast.LENGTH_SHORT).show();
-                                     }
-                                 });
+            @Override
+            public void onSkipToPrevious() {
+                previous();
+                Toast.makeText(MusicActivity.this, "onSkipToPrevious()", Toast.LENGTH_SHORT).show();
+            }
+        });
 
         mediaSession.setFlags(MediaSessionCompat.FLAG_HANDLES_MEDIA_BUTTONS);
         // 激活 MediaSessionCompat
         mediaSession.setActive(true);
 
         // 描述媒体播放的状态(很重要，沒加入會沒動作)
-        PlaybackStateCompat state = new PlaybackStateCompat.Builder() .setActions(
+        PlaybackStateCompat state = new PlaybackStateCompat.Builder().setActions(
                 PlaybackStateCompat.ACTION_PLAY |
                         PlaybackStateCompat.ACTION_PLAY_PAUSE |
                         PlaybackStateCompat.ACTION_PAUSE |
@@ -136,21 +160,86 @@ public class MusicActivity extends AppCompatActivity implements View.OnClickList
             }
         });
 
-        //取/res/raw資料夾下的音樂resId
-        Field[] fields = R.raw.class.getFields();
-        for (int i = 0; i < fields.length; i++) {
-            try {
-                integers.add(fields[i].getInt(null));
-            } catch (IllegalAccessException e) {
-                e.printStackTrace();
+        Cursor cursor = getContentResolver().query(
+                MediaStore.Audio.Media.EXTERNAL_CONTENT_URI,
+                null,
+                null,
+                null,
+                null);
+        // 檢查權限是否已經被授予
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE)
+                == PackageManager.PERMISSION_GRANTED) {
+
+            // 已經有權限，可以執行訪問外部存儲空間的程式碼
+
+            if (cursor != null) {
+                System.out.println("cursor: " + cursor.toString());
+                System.out.println("cursor: " + cursor.moveToNext());
+                System.out.println("path: " + path);
+                while (cursor.moveToNext()) {
+                    // 取得檔案資訊
+                    long id = cursor.getLong(cursor.getColumnIndexOrThrow(MediaStore.Audio.Media._ID));
+                    System.out.println("id: " + id);
+//                    integers.add((int)id);
+                    String title = cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.TITLE));
+                    String artist = cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.ARTIST));
+                    path = cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.DATA));
+                    int albumIdColumn = cursor.getColumnIndex(MediaStore.Audio.Media.ALBUM_ID);
+                    System.out.println("albumIdColumn: " + albumIdColumn);
+                    System.out.println("path: " + path);
+                    System.out.println("title: " + title);
+                    System.out.println("artist: " + artist);
+                    // 做些什麼...
+
+                    File file = new File(path); // 獲取名稱為 path 的公開成員變數對應的 Field 物件
+
+                    Uri uri = Uri.fromFile(file);
+                    integers.add(uri);
+
+
+                }
+                cursor.close();
             }
+        } else {
+            // 沒有權限，需要向用戶請求權限
+            Toast.makeText(MusicActivity.this, "需要獲取資料權限", Toast.LENGTH_SHORT).show();
+            finish();
         }
-        if (integers.size() > 0) {
-            playI = 0;
-            setMediaPlayer();
-        }
+
+
+        setMediaPlayer();
+        //取/res/raw資料夾下的音樂resId
+//        Field[] fields = R.raw.class.getFields();
+//        int mp3_1 = R.raw.mp3_1;
+//        for (int i = 0; i < fields.length; i++) {
+//            try {
+//                integers.add(fields[i].getInt(null));
+//            } catch (IllegalAccessException e) {
+//                e.printStackTrace();
+//            }
+//        }
+//        if (integers.size() > 0) {
+//            playI = 0;
+//            setMediaPlayer();
+//        }
     }
 
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        switch (requestCode) {
+            case MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE: {
+                // 如果使用者授予了權限
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    // 可以執行訪問外部存儲空間的程式碼
+                    return;
+                } else {
+                    // 沒有授予權限，無法訪問外部存儲空間
+                    finish();
+                }
+            }
+        }
+    }
 
     @Override
     protected void onDestroy() {
@@ -203,13 +292,15 @@ public class MusicActivity extends AppCompatActivity implements View.OnClickList
     }
 
     void play() {
-        if (mediaPlayer.isPlaying()) {
-            mediaPlayer.pause();
-            playButton.setImageResource(R.drawable.play_selector);
+        if (mediaPlayer != null) {
+            if (mediaPlayer.isPlaying()) {
+                mediaPlayer.pause();
+                playButton.setImageResource(R.drawable.play_selector);
 
-        } else {
-            mediaPlayer.start();
-            playButton.setImageResource(R.drawable.pause_selector);
+            } else {
+                mediaPlayer.start();
+                playButton.setImageResource(R.drawable.pause_selector);
+            }
         }
     }
 
@@ -254,8 +345,16 @@ public class MusicActivity extends AppCompatActivity implements View.OnClickList
             mediaPlayer.release();
         }
         // 使用 MediaPlayer 播放音樂
-        int resId = integers.get(playI);
+        Uri resId = integers.get(playI);
         mediaPlayer = MediaPlayer.create(this, resId);
+//        mediaPlayer.
+//        mediaPlayer.prepareAsync();
+//        try {
+//            System.out.println("path: " +path);
+//            mediaPlayer.setDataSource(path);
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
         if (counter % 3 == 1) {
             mediaPlayer.setLooping(true);
         }
@@ -299,7 +398,8 @@ public class MusicActivity extends AppCompatActivity implements View.OnClickList
             }
         });
         // 取得音樂檔案名稱
-        titleTextView.setText(getResources().getResourceEntryName(resId));
+//        titleTextView.setText(getResources().getResourceEntryName(resId));
+        titleTextView.setText(resId.getLastPathSegment());
         total_time_text.setText(intToTime(mediaPlayer.getDuration()));
     }
 
