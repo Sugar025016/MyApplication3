@@ -1,7 +1,6 @@
 package com.example.musicapplication;
 
 
-import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
@@ -17,7 +16,6 @@ import android.database.Cursor;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -151,27 +149,23 @@ public class MusicActivity extends AppCompatActivity implements View.OnClickList
                 // 停止拖動 SeekBar 時不執行任何操作
             }
         });
-        Cursor cursor = getContentResolver().query(
-                MediaStore.Audio.Media.EXTERNAL_CONTENT_URI,
-                null,
-                null,
-                null,
-                null);
+
 
         /** 檢查權限是否已經被授予 **/
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE)
                 == PackageManager.PERMISSION_GRANTED) {
             // 已經有權限，可以執行訪問外部存儲空間的程式碼
-
+            Cursor cursor = getContentResolver().query(
+                    MediaStore.Audio.Media.EXTERNAL_CONTENT_URI,
+                    null,
+                    null,
+                    null,
+                    null);
             if (cursor != null) {
-                System.out.println("cursor: " + cursor.toString());
-                System.out.println("cursor: " + cursor.moveToNext());
-                System.out.println("path: " + path);
                 while (cursor.moveToNext()) {
                     // 取得檔案資訊
                     long id = cursor.getLong(cursor.getColumnIndexOrThrow(MediaStore.Audio.Media._ID));
-                    System.out.println("id: " + id);
-//                    integers.add((int)id);
+                    Log.d("MediaStore", "id: " +id);
                     String title = cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.TITLE));
                     String artist = cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.ARTIST));
                     path = cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.DATA));
@@ -180,13 +174,10 @@ public class MusicActivity extends AppCompatActivity implements View.OnClickList
                     System.out.println("path: " + path);
                     System.out.println("title: " + title);
                     System.out.println("artist: " + artist);
-
                     File file = new File(path); // 獲取名稱為 path 的公開成員變數對應的 Field 物件
 
                     Uri uri = Uri.fromFile(file);
                     musicItem.add(uri);
-
-
                 }
                 cursor.close();
             }
