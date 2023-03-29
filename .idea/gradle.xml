@@ -11,6 +11,8 @@
           <set>
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/app" />
+            <option value="$PROJECT_DIR$/bluetoothapplication" />
+            <option value="$PROJECT_DIR$/bluetoothserverapplication" />
             <option value="$PROJECT_DIR$/chapter05" />
             <option value="$PROJECT_DIR$/chapter07-client" />
             <option value="$PROJECT_DIR$/chapter07-server" />
