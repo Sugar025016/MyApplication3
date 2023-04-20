@@ -1,4 +1,4 @@
-package com.example.bluetoothapplication;
+package com.example.bluetoothserverapplication;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
@@ -8,7 +8,6 @@ import android.bluetooth.BluetoothDevice;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.location.LocationManager;
 import android.util.Log;
 
 import androidx.core.app.ActivityCompat;
@@ -18,10 +17,10 @@ import java.util.List;
 
 @SuppressLint("MissingPermission")
 public class BluetoothController {
-    private BluetoothAdapter bluetoothAdapter;
+    private BluetoothAdapter mAdapter;
 
     public BluetoothController(BluetoothAdapter bluetoothAdapter) {
-        this.bluetoothAdapter = bluetoothAdapter;
+        this.mAdapter = bluetoothAdapter;
     }
 
     public void turnOnBluetooth(Activity activity, int requestCode) {
@@ -32,50 +31,36 @@ public class BluetoothController {
         } catch (SecurityException e) {
             Log.e("SecurityException", e.getMessage());
         }
+
+    }
+
+    public BluetoothAdapter getmAdapter() {
+        return mAdapter;
     }
 
     public void enableVisibly(Context context) {
         Intent discoverableIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_DISCOVERABLE);
         discoverableIntent.putExtra(BluetoothAdapter.EXTRA_DISCOVERABLE_DURATION, 300);
-
         context.startActivity(discoverableIntent);
     }
+
     public void findDevice() {
-        assert (bluetoothAdapter != null);
-        if (bluetoothAdapter.isDiscovering()) {
-            bluetoothAdapter.cancelDiscovery();
+        assert (mAdapter != null);
+        if (mAdapter.isDiscovering()) {
+            mAdapter.cancelDiscovery();
         } else {
-            if (bluetoothAdapter.isEnabled()) {
-            /** bluetoothAdapter.startDiscovery();需要位置權限，但即使授予了位置權限，當它被禁用時，藍牙 API 也不起作用。
-             所以建議大家添加如，確保權限生效： **/
-                bluetoothAdapter.startDiscovery();
+            if (mAdapter.isEnabled()) {
+                /** bluetoothAdapter.startDiscovery();需要位置權限，但即使授予了位置權限，當它被禁用時，藍牙 API 也不起作用。
+                 所以添加，確保權限生效： **/
+
+                mAdapter.startDiscovery();
 
             }
         }
     }
 
-    public boolean isSupportBluetooth() {
-        if (bluetoothAdapter != null) {
-            return true;
-        } else {
-            return false;
-        }
-    }
-
     public List<BluetoothDevice> getBondedDeviceList(){
-        return new ArrayList<>(bluetoothAdapter.getBondedDevices());
+        return new ArrayList<>(mAdapter.getBondedDevices());
     }
 
-    public boolean getBluetoothStatus() {
-        assert (bluetoothAdapter != null);
-        return bluetoothAdapter.isEnabled();
-    }
-
-    public void turnOffBluetooth() {
-        try {
-            bluetoothAdapter.disable();
-        } catch (SecurityException e) {
-            Log.e("SecurityException", e.getMessage());
-        }
-    }
 }

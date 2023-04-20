@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
-
     <!--    基本藍芽權限-->
     <uses-permission android:name="android.permission.BLUETOOTH" />
     <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
@@ -9,13 +8,16 @@
     <uses-permission android:name="android.permission.BLUETOOTH_CONNECT" />
 
     <!--    掃描藍芽所需權限-->
-    <uses-permission android:name="android.permission.BLUETOOTH_SCAN" />
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <!--    斷言應用從不使用藍牙權限來獲取物理位置 (neverForLocation)-->
+    <uses-permission android:name="android.permission.BLUETOOTH_SCAN"
+        android:usesPermissionFlags="neverForLocation" />
+    <!--    or獲取物理位置權限 ACCESS_FINE_LOCATION 和 ACCESS_COARSE_LOCATION -->
+<!--    <uses-permission android:name="android.permission.BLUETOOTH_SCAN" />-->
+<!--    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />-->
+<!--    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />-->
 
 
-    <!--    <uses-feature android:name="android.hardware.bluetooth" android:required="false"/>-->
-    <!--    <uses-feature android:name="android.hardware.bluetooth_le" android:required="false"/>-->
+<!--    <uses-permission android:name="android.permission.BLUETOOTH_ADVERTISE" />-->
 
 
     <application
@@ -25,7 +27,6 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.MyApplication">
-
         <activity
             android:name=".MainActivity"
             android:exported="true">
